@@ -19,6 +19,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.0.3",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
     "nanoid": "^5.0.9",
