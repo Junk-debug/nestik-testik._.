@@ -14,18 +14,22 @@ export class LinksService {
   private readonly logger = new Logger(LinksService.name);
 
   getLinks() {
+    this.logger.log('Selecting all links');
     return db.select().from(linksTable);
   }
 
   async getLinkByKey(linkKey: string) {
+    this.logger.log(`Finding link for a key: ${linkKey}`);
+
     const link = await db.query.linksTable.findFirst({
       where: ({ key }, { eq }) => eq(key, linkKey),
     });
 
     if (!link) {
-      throw new NotFoundException(`Link with key ${linkKey} not found`);
+      throw new NotFoundException(`Link with key "${linkKey}" not found`);
     }
 
+    this.logger.log(`Link found: ${link.url}`);
     return link;
   }
 
