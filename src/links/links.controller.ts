@@ -29,7 +29,7 @@ export class LinksController {
   @Post('shorten')
   @HttpCode(HttpStatus.CREATED)
   async shortUrlAndSave(@Body() body: { url: string }) {
-    const shortLink = await this.linksService.getShortLink(body.url);
+    const shortLink = await this.linksService.createShortLink(body.url);
 
     return {
       message: 'URL successfully shorten',
