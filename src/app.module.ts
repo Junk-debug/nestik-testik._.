@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LinksModule } from './links/links.module';
-import { RootModule } from './root';
+import { LinksModule } from './modules/links/links.module';
+import { RootModule } from './modules/root';
 
 @Module({
   imports: [LinksModule, RootModule],

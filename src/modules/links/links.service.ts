@@ -7,7 +7,7 @@ import {
 import { nanoid } from 'nanoid';
 import { db } from 'src/db';
 import { linksTable } from 'src/db/schema';
-import { validateUrl } from 'src/utils';
+import { validateUrl } from 'src/utils/validateURL';
 
 @Injectable()
 export class LinksService {
