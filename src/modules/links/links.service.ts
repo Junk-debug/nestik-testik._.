@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, Logger } from '@nestjs/common';
-
+import normalizeUrl from 'normalize-url';
+import { nanoid } from 'nanoid';
 import { db } from 'src/db';
 import { linksTable } from 'src/db/schema';
 
@@ -28,11 +29,6 @@ export class LinksService {
   }
 
   async createShortLink(url: string): Promise<string> {
-    // these packages is weird, they don't support commonjs
-    // modern node versions(since v22.14.0) supports cjs even if library doesn't support it, but railway only has access to node v22.10.0, so we using it this way
-    const { default: normalizeUrl } = await import('normalize-url');
-    const { nanoid } = await import('nanoid');
-
     const normalizedURL = normalizeUrl(url, { defaultProtocol: 'https' });
 
     const link = await db.query.linksTable.findFirst({
