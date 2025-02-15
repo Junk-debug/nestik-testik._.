@@ -1,13 +1,8 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { nanoid } from 'nanoid';
+import normalizeUrl from 'normalize-url';
 import { db } from 'src/db';
 import { linksTable } from 'src/db/schema';
-import { validateUrl } from 'src/utils/validateURL';
 
 @Injectable()
 export class LinksService {
@@ -34,22 +29,20 @@ export class LinksService {
   }
 
   async createShortLink(url: string): Promise<string> {
-    if (!validateUrl(url)) {
-      throw new BadRequestException('Invalid URL format');
-    }
+    const normalizedURL = normalizeUrl(url, { defaultProtocol: 'https' });
 
     const link = await db.query.linksTable.findFirst({
-      where: ({ url: u }, { eq }) => eq(u, url),
+      where: ({ url }, { eq }) => eq(url, normalizedURL),
     });
 
     if (link) {
       this.logger.log(
-        `This link is already exists, returning saved short link for URL: ${url}`,
+        `This link is already exists, returning saved short link for URL: ${normalizedURL}`,
       );
       return `${process.env.BASE_URL}/links/${link.key}`;
     }
 
-    this.logger.log(`Creating short link for URL: ${url}`);
+    this.logger.log(`Creating short link for URL: ${normalizedURL}`);
 
     const key = nanoid(6);
     await db.insert(linksTable).values({
