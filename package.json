@@ -2,7 +2,7 @@
   "name": "nest-test",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Junk-debug",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -24,7 +24,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
-    "nanoid": "^3.3.8",
+    "nanoid": "^5.1.0",
     "normalize-url": "^8.0.1",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.2",
