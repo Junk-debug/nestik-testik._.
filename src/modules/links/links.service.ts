@@ -28,8 +28,10 @@ export class LinksService {
     return link;
   }
 
-  async createShortLink(url: string): Promise<string> {
-    const normalizedURL = normalizeUrl(url, { defaultProtocol: 'https' });
+  async createShortLink(rawUrl: string): Promise<string> {
+    this.logger.log(`[createShortLink start] Raw URL: ${rawUrl}`);
+    const normalizedURL = normalizeUrl(rawUrl);
+    this.logger.log(`Normalized URL: ${normalizedURL}`);
 
     const link = await db.query.linksTable.findFirst({
       where: ({ url }, { eq }) => eq(url, normalizedURL),
@@ -37,8 +39,9 @@ export class LinksService {
 
     if (link) {
       this.logger.log(
-        `This link is already exists, returning saved short link for URL: ${normalizedURL}`,
+        `Found the same link: ${link.url}, returning saved short link`,
       );
+      this.logger.log('[createShortLink end]');
       return `${process.env.BASE_URL}/links/${link.key}`;
     }
 
@@ -46,12 +49,13 @@ export class LinksService {
 
     const key = nanoid(6);
     await db.insert(linksTable).values({
-      url,
+      url: normalizedURL,
       key,
     });
 
     this.logger.log(`Created short link with key: ${key}`);
 
+    this.logger.log('[createShortLink end]');
     return `${process.env.BASE_URL}/links/${key}`;
   }
 }
