@@ -31,7 +31,7 @@ export class LinksController {
     return { url };
   }
 
-  @Post('shorten')
+  @Post()
   @ApiOperation({
     summary: 'Saves url to db and returns it short version',
   })
